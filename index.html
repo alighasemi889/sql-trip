@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>آکادمی SQL | آموزش کامل کوئری‌ها</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .code-block {
+            background: #0f172a;
+            border-right: 4px solid #38bdf8;
+            border-radius: 12px;
+        }
+        .query-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .query-card:hover {
+            background: rgba(56, 189, 248, 0.05);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateX(4px);
+        }
+        .query-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .query-detail.open {
+            max-height: 3000px;
+        }
+        .badge-glow {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+        .tab-active {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+        .level-badge {
+            transition: all 0.3s ease;
+        }
+        .level-badge:hover {
+            transform: scale(1.05);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 20px;
+        }
+        .search-highlight {
+            background: rgba(56, 189, 248, 0.2);
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-slate-200 min-h-screen">
+
+    <!-- ====== HEADER ====== -->
+    <header class="border-b border-white/5 glass sticky top-0 z-50 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                        <i class="fas fa-database text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                        SQL<span class="text-slate-300 font-light">آکادمی</span>
+                    </span>
+                </div>
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="#" class="text-cyan-300 border-b-2 border-cyan-400 pb-1">کوئری‌ها</a>
+                    <a href="#" class="text-slate-400 hover:text-slate-200 transition">دوره‌ها</a>
+                    <a href="#" class="text-slate-400 hover:text-slate-200 transition">تمرین</a>
+                    <a href="#" class="text-slate-400 hover:text-slate-200 transition">مستندات</a>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <button class="hidden sm:inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-300 px-4 py-2 rounded-xl text-sm font-medium border border-cyan-500/20 hover:bg-cyan-500/20 transition">
+                        <i class="fas fa-user-graduate"></i> <span>ورود</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- ====== HERO ====== -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800/60 via-slate-800/30 to-transparent border border-white/5 p-6 md:p-10 mb-12">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -z-10"></div>
+            <div class="absolute bottom-0 left-0 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl -z-10"></div>
+            <div class="text-center">
+                <span class="inline-block bg-cyan-500/10 text-cyan-300 text-xs font-bold px-4 py-1.5 rounded-full border border-cyan-500/20 mb-4 badge-glow">
+                    <i class="fas fa-list-check ml-1"></i> ۱۸ مفهوم + کوئری
+                </span>
+                <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+                    <span class="bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                        آموزش کامل
+                    </span>
+                    <span class="text-slate-200"> دستورات و مفاهیم SQL </span>
+                </h1>
+                <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mt-4 leading-relaxed">
+                    از SELECT تا Window Functions، همه چیز را با <span class="text-cyan-300">توضیحات کامل</span> و 
+                    <span class="text-cyan-300">مثال‌های عملی</span> یاد بگیر. روی هر مبحث کلیک کن تا جزئیات رو ببینی.
+                </p>
+            </div>
+        </section>
+
+        <!-- ====== فیلتر سطح ====== -->
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-10">
+            <button class="tab-active px-6 py-2.5 rounded-xl border border-cyan-500/20 text-sm font-medium transition flex items-center gap-2" onclick="filterQueries('all')">
+                <i class="fas fa-th-list"></i> همه
+            </button>
+            <button class="px-6 py-2.5 rounded-xl border border-white/5 text-sm font-medium text-slate-400 hover:text-white hover:border-white/20 transition flex items-center gap-2" onclick="filterQueries('beginner')">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> مبتدی
+            </button>
+            <button class="px-6 py-2.5 rounded-xl border border-white/5 text-sm font-medium text-slate-400 hover:text-white hover:border-white/20 transition flex items-center gap-2" onclick="filterQueries('intermediate')">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span> متوسط
+            </button>
+            <button class="px-6 py-2.5 rounded-xl border border-white/5 text-sm font-medium text-slate-400 hover:text-white hover:border-white/20 transition flex items-center gap-2" onclick="filterQueries('advanced')">
+                <span class="w-2 h-2 rounded-full bg-rose-400"></span> پیشرفته
+            </button>
+            <button class="px-6 py-2.5 rounded-xl border border-white/5 text-sm font-medium text-slate-400 hover:text-white hover:border-white/20 transition flex items-center gap-2" onclick="filterQueries('concept')">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span> مفاهیم
+            </button>
+        </div>
+
+        <!-- ====== جستجو ====== -->
+        <div class="max-w-md mx-auto mb-10">
+            <div class="relative">
+                <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                <input type="text" id="searchInput" placeholder="جستجوی کوئری یا مفهوم..." 
+                    class="w-full bg-slate-800/50 border border-white/10 rounded-xl px-10 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition"
+                    onkeyup="searchQueries(this.value)">
+            </div>
+        </div>
+
+        <!-- ====== لیست کامل کوئری‌ها و مفاهیم ====== -->
+
+        <!-- ====== سطح ۱: مبتدی (SELECT, WHERE, COUNT, SUM, AVG, MIN, MAX, DELETE, UPDATE) ====== -->
+        <div class="mb-10" data-level="beginner">
+            <div class="flex items-center gap-3 mb-5">
+                <span class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-300 flex items-center justify-center border border-emerald-500/20">
+                    <i class="fas fa-seedling"></i>
+                </span>
+                <h2 class="text-2xl font-bold text-slate-100">سطح مبتدی</h2>
+                <span class="text-xs bg-emerald-500/10 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20">۹ مفهوم</span>
+            </div>
+
+            <!-- 1. SELECT -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="select">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-magnifying-glass"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">SELECT</h3>
+                            <p class="text-xs text-slate-400">انتخاب و نمایش داده‌ها از جدول</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    دستور <span class="text-cyan-300 font-mono">SELECT</span> برای دریافت و نمایش داده‌ها از یک یا چند جدول استفاده می‌شود. 
+                                    این پایه‌ترین و پرکاربردترین دستور در SQL است.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">می‌توانید ستون‌های خاصی را انتخاب کنید</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">با <span class="text-cyan-300 font-mono">*</span> همه ستون‌ها را نمایش دهید</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">با <span class="text-cyan-300 font-mono">AS</span> نام ستون‌ها را تغییر دهید</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-yellow-300">first_name</span>, <span class="text-yellow-300">last_name</span>, <span class="text-yellow-300">email</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    نام، نام‌خانوادگی و ایمیل همه دانشجویان را نمایش می‌دهد.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. WHERE -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="where filter شرط">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-filter"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">WHERE</h3>
+                            <p class="text-xs text-slate-400">فیلتر کردن داده‌ها با شرایط</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    دستور <span class="text-cyan-300 font-mono">WHERE</span> برای فیلتر کردن رکوردها بر اساس شرایط مشخص استفاده می‌شود. 
+                                    فقط رکوردهایی که شرط را برآورده کنند، نمایش داده می‌شوند.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">عملگرهای مقایسه‌ای: <span class="text-cyan-300 font-mono">=</span>، <span class="text-cyan-300 font-mono">&gt;</span>، <span class="text-cyan-300 font-mono">&lt;</span></span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">عملگرهای منطقی: <span class="text-cyan-300 font-mono">AND</span>، <span class="text-cyan-300 font-mono">OR</span>، <span class="text-cyan-300 font-mono">NOT</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-yellow-300">first_name</span>, <span class="text-yellow-300">last_name</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
+<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">enrollment_year</span> = <span class="text-amber-300">2025</span>
+<span class="text-cyan-400">AND</span> <span class="text-yellow-300">gpa</span> <span class="text-cyan-400">&gt;=</span> <span class="text-amber-300">17</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    دانشجویان سال ۲۰۲۵ با معدل بالاتر از ۱۷.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. COUNT -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="count تعداد شمارش">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-hashtag"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">COUNT</h3>
+                            <p class="text-xs text-slate-400">شمارش تعداد رکوردها</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    تابع <span class="text-cyan-300 font-mono">COUNT()</span> تعداد رکوردهایی را که با شرط مطابقت دارند، شمارش می‌کند. 
+                                    با <span class="text-cyan-300 font-mono">COUNT(*)</span> همه رکوردها و با <span class="text-cyan-300 font-mono">COUNT(column)</span> 
+                                    تعداد مقادیر غیر NULL را شمارش می‌کند.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">همراه با <span class="text-cyan-300 font-mono">GROUP BY</span> برای دسته‌بندی استفاده می‌شود</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">مقادیر NULL را شمارش نمی‌کند</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">COUNT</span>(*) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">total_students</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
+<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">status</span> = <span class="text-amber-300">'active'</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    تعداد دانشجویان فعال را نمایش می‌دهد.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. SUM -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="sum جمع مجموع">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">SUM</h3>
+                            <p class="text-xs text-slate-400">محاسبه مجموع مقادیر</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    تابع <span class="text-cyan-300 font-mono">SUM()</span> مجموع مقادیر یک ستون عددی را محاسبه می‌کند. 
+                                    معمولاً با <span class="text-cyan-300 font-mono">GROUP BY</span> برای محاسبه مجموع در هر گروه استفاده می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">فقط روی ستون‌های عددی قابل استفاده است</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">مقادیر NULL را نادیده می‌گیرد</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">SUM</span>(<span class="text-yellow-300">amount</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">total_sales</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">orders</span>
+<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">date</span> = <span class="text-amber-300">'2025-01-01'</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    مجموع فروش در تاریخ مشخص را محاسبه می‌کند.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. AVG -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="avg average میانگین معدل">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">AVG</h3>
+                            <p class="text-xs text-slate-400">محاسبه میانگین مقادیر</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    تابع <span class="text-cyan-300 font-mono">AVG()</span> میانگین مقادیر یک ستون عددی را محاسبه می‌کند. 
+                                    برای محاسبه میانگین نمرات، حقوق، قیمت و ... استفاده می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">فقط روی ستون‌های عددی قابل استفاده است</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">می‌توان با <span class="text-cyan-300 font-mono">ROUND()</span> گرد کرد</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">AVG</span>(<span class="text-yellow-300">gpa</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">average_gpa</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
+<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">department</span> = <span class="text-amber-300">'Computer Science'</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    میانگین معدل دانشجویان رشته کامپیوتر.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. MIN -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="min minimum کمترین کوچکترین">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-arrow-down"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">MIN</h3>
+                            <p class="text-xs text-slate-400">پیدا کردن کمترین مقدار</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    تابع <span class="text-cyan-300 font-mono">MIN()</span> کوچکترین مقدار را در یک ستون پیدا می‌کند. 
+                                    برای پیدا کردن کمترین قیمت، جوان‌ترین سن، کمترین نمره و ... استفاده می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">روی ستون‌های عددی و متنی قابل استفاده است</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">مقادیر NULL را نادیده می‌گیرد</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">MIN</span>(<span class="text-yellow-300">price</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">cheapest_product</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">products</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    ارزان‌ترین قیمت محصولات را پیدا می‌کند.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. MAX -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="max maximum بیشترین بزرگترین">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-arrow-up"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">MAX</h3>
+                            <p class="text-xs text-slate-400">پیدا کردن بیشترین مقدار</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    تابع <span class="text-cyan-300 font-mono">MAX()</span> بزرگترین مقدار را در یک ستون پیدا می‌کند. 
+                                    برای پیدا کردن گران‌ترین قیمت، مسن‌ترین سن، بالاترین نمره و ... استفاده می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">روی ستون‌های عددی و متنی قابل استفاده است</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">مقادیر NULL را نادیده می‌گیرد</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">MAX</span>(<span class="text-yellow-300">salary</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">highest_salary</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">employees</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    بالاترین حقوق کارمندان را پیدا می‌کند.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. DELETE -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="delete حذف پاک کردن">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-red-500/10 text-red-300 flex items-center justify-center text-sm border border-red-500/20">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">DELETE</h3>
+                            <p class="text-xs text-slate-400">حذف رکوردها از جدول</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-red-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    دستور <span class="text-red-300 font-mono">DELETE</span> برای حذف رکوردها از یک جدول استفاده می‌شود. 
+                                    <span class="text-red-300 font-bold">هشدار:</span> بدون <span class="text-cyan-300 font-mono">WHERE</span> همه رکوردها حذف می‌شوند!
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-exclamation-triangle text-red-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">همیشه از <span class="text-cyan-300 font-mono">WHERE</span> استفاده کنید</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">قابل بازگشت نیست (مگر با <span class="text-cyan-300 font-mono">ROLLBACK</span>)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-red-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">DELETE</span> <span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
+<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">id</span> = <span class="text-amber-300">123</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-red-500/10 p-3 rounded-xl border border-red-500/20">
+                                    <i class="fas fa-exclamation-triangle text-red-400 ml-1"></i>
+                                    دانشجویی با شناسه ۱۲۳ را حذف می‌کند.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. UPDATE -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="update بروزرسانی تغییر">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-300 flex items-center justify-center text-sm border border-amber-500/20">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">UPDATE</h3>
+                            <p class="text-xs text-slate-400">بروزرسانی رکوردها</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/20">مبتدی</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-amber-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    دستور <span class="text-amber-300 font-mono">UPDATE</span> برای تغییر مقادیر رکوردهای موجود در جدول استفاده می‌شود. 
+                                    <span class="text-amber-300 font-bold">توجه:</span> بدون <span class="text-cyan-300 font-mono">WHERE</span> همه رکوردها تغییر می‌کنند!
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-exclamation-triangle text-amber-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">همیشه از <span class="text-cyan-300 font-mono">WHERE</span> استفاده کنید</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">می‌توان چند ستون را همزمان تغییر داد</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-amber-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">UPDATE</span> <span class="text-blue-300">students</span>
+<span class="text-cyan-400">SET</span> <span class="text-yellow-300">gpa</span> = <span class="text-amber-300">18.5</span>, <span class="text-yellow-300">status</span> = <span class="text-amber-300">'graduated'</span>
+<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">id</span> = <span class="text-amber-300">456</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-amber-500/10 p-3 rounded-xl border border-amber-500/20">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    معدل و وضعیت دانشجو با شناسه ۴۵۶ را تغییر می‌دهد.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== سطح ۲: متوسط (RANDOM, FOREIGN KEY, PRIMARY KEY) ====== -->
+        <div class="mb-10" data-level="intermediate">
+            <div class="flex items-center gap-3 mb-5">
+                <span class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-300 flex items-center justify-center border border-amber-500/20">
+                    <i class="fas fa-chart-simple"></i>
+                </span>
+                <h2 class="text-2xl font-bold text-slate-100">سطح متوسط</h2>
+                <span class="text-xs bg-amber-500/10 text-amber-300 px-3 py-1 rounded-full border border-amber-500/20">۳ مفهوم</span>
+            </div>
+
+            <!-- 10. RANDOM -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="intermediate" data-search="random تصادفی">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-dice"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">RANDOM</h3>
+                            <p class="text-xs text-slate-400">انتخاب تصادفی رکوردها</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/20">متوسط</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    تابع <span class="text-cyan-300 font-mono">RANDOM()</span> (یا <span class="text-cyan-300 font-mono">RAND()</span> در برخی دیتابیس‌ها) 
+                                    برای انتخاب تصادفی رکوردها استفاده می‌شود. معمولاً با <span class="text-cyan-300 font-mono">ORDER BY</span> ترکیب می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">برای نمایش رکوردهای تصادفی مفید است</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">در هر بار اجرا نتیجه متفاوت است</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-yellow-300">name</span>, <span class="text-yellow-300">question</span>
+<span class="text-cyan-400">FROM</span> <span class="text-blue-300">quiz_questions</span>
+<span class="text-cyan-400">ORDER BY</span> <span class="text-cyan-400">RANDOM()</span>
+<span class="text-cyan-400">LIMIT</span> <span class="text-amber-300">5</span>;</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    ۵ سوال تصادفی از بانک سوالات را انتخاب می‌کند.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. PRIMARY KEY -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="intermediate" data-search="primary key کلید اصلی">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-key"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">PRIMARY KEY</h3>
+                            <p class="text-xs text-slate-400">کلید اصلی جدول</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/20">متوسط</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    <span class="text-cyan-300 font-mono">PRIMARY KEY</span> (کلید اصلی) یک ستون یا ترکیبی از ستون‌ها است که 
+                                    به‌طور یکتا هر رکورد را در جدول مشخص می‌کند. 
+                                    <span class="text-cyan-300 font-bold">ویژگی‌ها:</span> یکتا (UNIQUE) و غیر NULL.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">هر جدول فقط یک PRIMARY KEY دارد</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">معمولاً از <span class="text-cyan-300 font-mono">AUTO_INCREMENT</span> استفاده می‌شود</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">students</span> (
+    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span> <span class="text-cyan-400">AUTO_INCREMENT</span>,
+    <span class="text-yellow-300">first_name</span> <span class="text-cyan-400">TEXT</span>,
+    <span class="text-yellow-300">last_name</span> <span class="text-cyan-400">TEXT</span>,
+    <span class="text-yellow-300">email</span> <span class="text-cyan-400">TEXT</span>
+);</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    ستون id به‌عنوان کلید اصلی، هر دانشجو را یکتا می‌کند.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. FOREIGN KEY -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="intermediate" data-search="foreign key کلید خارجی">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-link"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">FOREIGN KEY</h3>
+                            <p class="text-xs text-slate-400">کلید خارجی و ارتباط بین جداول</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/20">متوسط</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    <span class="text-cyan-300 font-mono">FOREIGN KEY</span> (کلید خارجی) ستونی است که به PRIMARY KEY جدول دیگر ارجاع می‌دهد. 
+                                    برای ایجاد ارتباط بین جداول و حفظ یکپارچگی داده‌ها استفاده می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">ارتباط <span class="text-cyan-300 font-mono">one-to-many</span> را پیاده‌سازی می‌کند</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">با <span class="text-cyan-300 font-mono">ON DELETE CASCADE</span> حذف زنجیره‌ای</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">enrollments</span> (
+    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span> <span class="text-cyan-400">AUTO_INCREMENT</span>,
+    <span class="text-yellow-300">student_id</span> <span class="text-cyan-400">INTEGER</span>,
+    <span class="text-yellow-300">course_id</span> <span class="text-cyan-400">INTEGER</span>,
+    <span class="text-cyan-400">FOREIGN KEY</span> (student_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">students</span>(id),
+    <span class="text-cyan-400">FOREIGN KEY</span> (course_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">courses</span>(id)
+);</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    جدول ثبت‌نام که به جداول students و courses متصل است.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== سطح ۳: پیشرفته و مفاهیم (ONE TO ONE, ONE TO MANY) ====== -->
+        <div data-level="advanced concept">
+            <div class="flex items-center gap-3 mb-5">
+                <span class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-300 flex items-center justify-center border border-rose-500/20">
+                    <i class="fas fa-sitemap"></i>
+                </span>
+                <h2 class="text-2xl font-bold text-slate-100">مفاهیم پیشرفته</h2>
+                <span class="text-xs bg-rose-500/10 text-rose-300 px-3 py-1 rounded-full border border-rose-500/20">۲ مفهوم</span>
+            </div>
+
+            <!-- 13. ONE TO ONE -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="advanced concept" data-search="one to one یک به یک">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-arrow-right-arrow-left"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">One-to-One</h3>
+                            <p class="text-xs text-slate-400">رابطه یک به یک بین جداول</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-rose-500/10 text-rose-300 px-2 py-0.5 rounded-full border border-rose-500/20">پیشرفته</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    رابطه <span class="text-cyan-300 font-bold">One-to-One</span> زمانی است که هر رکورد در جدول A 
+                                    دقیقاً به یک رکورد در جدول B مرتبط است و بالعکس. معمولاً برای جدا کردن داده‌های حساس یا 
+                                    داده‌های با تعداد ستون زیاد استفاده می‌شود.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">مثال: کاربر و پروفایل</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">کلید خارجی معمولاً <span class="text-cyan-300 font-mono">UNIQUE</span> است</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">users</span> (
+    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+    <span class="text-yellow-300">username</span> <span class="text-cyan-400">TEXT</span>
+);
+
+<span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">profiles</span> (
+    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+    <span class="text-yellow-300">user_id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">UNIQUE</span>,
+    <span class="text-yellow-300">bio</span> <span class="text-cyan-400">TEXT</span>,
+    <span class="text-cyan-400">FOREIGN KEY</span> (user_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">users</span>(id)
+);</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    هر کاربر دقیقاً یک پروفایل دارد.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. ONE TO MANY -->
+            <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="advanced concept" data-search="one to many یک به چند">
+                <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
+                    <div class="flex items-center gap-4">
+                        <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-sm border border-cyan-500/20">
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-bold text-slate-200">One-to-Many</h3>
+                            <p class="text-xs text-slate-400">رابطه یک به چند بین جداول</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] bg-rose-500/10 text-rose-300 px-2 py-0.5 rounded-full border border-rose-500/20">پیشرفته</span>
+                        <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div class="query-detail px-5 pb-5">
+                    <div class="border-t border-white/5 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> توضیحات
+                                </h4>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    رابطه <span class="text-cyan-300 font-bold">One-to-Many</span> (یک به چند) رایج‌ترین نوع رابطه در دیتابیس‌های رابط‌ای است. 
+                                    هر رکورد در جدول A می‌تواند به چندین رکورد در جدول B مرتبط باشد، اما هر رکورد در B فقط به یک رکورد در A متصل است.
+                                </p>
+                                <div class="mt-3 space-y-2 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">مثال: دانشجو و ثبت‌نام‌ها</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                                        <span class="text-slate-400">کلید خارجی در جدول Many قرار می‌گیرد</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-code"></i> مثال
+                                </h4>
+                                <div class="code-block p-4">
+                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">authors</span> (
+    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+    <span class="text-yellow-300">name</span> <span class="text-cyan-400">TEXT</span>
+);
+
+<span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">books</span> (
+    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+    <span class="text-yellow-300">title</span> <span class="text-cyan-400">TEXT</span>,
+    <span class="text-yellow-300">author_id</span> <span class="text-cyan-400">INTEGER</span>,
+    <span class="text-cyan-400">FOREIGN KEY</span> (author_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">authors</span>(id)
+);</pre>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
+                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
+                                    هر نویسنده می‌تواند چندین کتاب داشته باشد.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+                            <button class="text-cyan-300 hover:text-cyan-200 text-sm font-medium flex items-center gap-1">
+                                <i class="fas fa-play"></i> اجرا در محیط تمرین
+                            </button>
+                            <span class="text-slate-600">|</span>
+                            <button class="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1" onclick="copyCode(this)">
+                                <i class="far fa-copy"></i> کپی
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="border-t border-white/5 mt-16 py-8 text-center text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                    <i class="fas fa-database text-white text-[10px]"></i>
+                </div>
+                <span class="font-medium text-slate-300">SQL<span class="text-slate-500">آکادمی</span></span>
+                <span class="text-slate-600">|</span>
+                <span class="text-slate-500">دانشگاه صنعتی</span>
+            </div>
+            <div class="flex items-center gap-6 text-xs">
+                <a href="#" class="hover:text-slate-300 transition">درباره ما</a>
+                <a href="#" class="hover:text-slate-300 transition">تماس</a>
+                <a href="#" class="hover:text-slate-300 transition">قوانین</a>
+                <span class="text-slate-600">|</span>
+                <span>© ۲۰۲۶</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== اسکریپت‌ها ====== -->
+    <script>
+        // تابع باز و بسته کردن کوئری‌ها
+        function toggleQuery(element) {
+            const detail = element.nextElementSibling;
+            const chevron = element.querySelector('.fa-chevron-down');
+            
+            // بستن سایر کوئری‌های باز (اختیاری - برای حالت تک‌باز)
+            // document.querySelectorAll('.query-detail.open').forEach(el => {
+            //     if (el !== detail) {
+            //         el.classList.remove('open');
+            //         el.previousElementSibling.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+            //     }
+            // });
+            
+            detail.classList.toggle('open');
+            if (chevron) {
+                chevron.style.transform = detail.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        }
+
+        // باز کردن اولین کوئری به‌صورت پیش‌فرض
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstQuery = document.querySelector('.query-card .query-detail');
+            const firstChevron = document.querySelector('.query-card .fa-chevron-down');
+            if (firstQuery) {
+                firstQuery.classList.add('open');
+                if (firstChevron) {
+                    firstChevron.style.transform = 'rotate(180deg)';
+                }
+            }
+        });
+
+        // تابع کپی کردن کد
+        function copyCode(button) {
+            const codeBlock = button.closest('.query-detail').querySelector('.code-block pre');
+            if (codeBlock) {
+                const code = codeBlock.textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check text-emerald-400"></i> کپی شد';
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                    }, 2000);
+                });
+            }
+        }
+
+        // تابع فیلتر کردن بر اساس سطح
+        function filterQueries(level) {
+            const cards = document.querySelectorAll('.query-card');
+            const buttons = document.querySelectorAll('.flex-wrap.justify-center .px-6');
+            
+            // به‌روزرسانی دکمه‌ها
+            buttons.forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-slate-400', 'border-white/5');
+                btn.classList.remove('border-cyan-500/20');
+            });
+            
+            // پیدا کردن دکمه کلیک شده
+            const clickedBtn = Array.from(buttons).find(btn => 
+                btn.textContent.includes(getLevelName(level))
+            );
+            if (clickedBtn) {
+                clickedBtn.classList.add('tab-active');
+                clickedBtn.classList.remove('text-slate-400', 'border-white/5');
+                clickedBtn.classList.add('border-cyan-500/20');
+            }
+            
+            // فیلتر کردن کارت‌ها
+            cards.forEach(card => {
+                if (level === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const cardLevels = card.dataset.level.split(' ');
+                    if (cardLevels.includes(level)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function getLevelName(level) {
+            const map = {
+                'all': 'همه',
+                'beginner': 'مبتدی',
+                'intermediate': 'متوسط',
+                'advanced': 'پیشرفته',
+                'concept': 'مفاهیم'
+            };
+            return map[level] || level;
+        }
+
+        // تابع جستجو
+        function searchQueries(query) {
+            const cards = document.querySelectorAll('.query-card');
+            const searchTerm = query.toLowerCase().trim();
+            
+            cards.forEach(card => {
+                const searchData = card.dataset.search || '';
+                const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+                const desc = card.querySelector('.text-xs.text-slate-400')?.textContent?.toLowerCase() || '';
+                
+                if (searchTerm === '') {
+                    card.style.display = 'block';
+                } else if (searchData.includes(searchTerm) || title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
