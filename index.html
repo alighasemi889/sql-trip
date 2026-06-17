@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>آکادمی SQL | آموزش کامل کوئری‌ها</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -24,6 +24,62 @@
             border-right: 4px solid #38bdf8;
             border-radius: 12px;
         }
+        
+        /* ====== استایل‌های جدید برای نمایش بهتر کدها ====== */
+        .code-block {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 transparent;
+        }
+        
+        .code-block::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 4px;
+        }
+        
+        .code-block pre {
+            font-size: clamp(9px, 1.5vw, 14px);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-word;
+            padding: 12px;
+            margin: 0;
+        }
+        
+        /* تنظیمات برای موبایل */
+        @media (max-width: 640px) {
+            .code-block pre {
+                font-size: clamp(8px, 1.3vw, 11px) !important;
+                line-height: 1.5 !important;
+                padding: 8px !important;
+            }
+            .code-block {
+                padding: 6px !important;
+                border-radius: 10px !important;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .code-block pre {
+                font-size: clamp(7px, 1.2vw, 9px) !important;
+                line-height: 1.4 !important;
+                padding: 4px !important;
+            }
+            .code-block {
+                padding: 4px !important;
+            }
+        }
+        
         .query-card {
             transition: all 0.3s ease;
             cursor: pointer;
@@ -49,12 +105,6 @@
             color: #38bdf8;
             border-color: rgba(56, 189, 248, 0.3);
         }
-        .level-badge {
-            transition: all 0.3s ease;
-        }
-        .level-badge:hover {
-            transform: scale(1.05);
-        }
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -69,6 +119,20 @@
             background: rgba(56, 189, 248, 0.2);
             border-radius: 4px;
             padding: 0 4px;
+        }
+        /* انیمیشن برای باز شدن */
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .query-detail.open {
+            animation: fadeSlideDown 0.4s ease forwards;
         }
     </style>
 </head>
@@ -93,9 +157,9 @@
                     <a href="#" class="text-slate-400 hover:text-slate-200 transition">مستندات</a>
                 </nav>
                 <div class="flex items-center gap-3">
-                    <button class="hidden sm:inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-300 px-4 py-2 rounded-xl text-sm font-medium border border-cyan-500/20 hover:bg-cyan-500/20 transition">
-                        <i class="fas fa-user-graduate"></i> <span>ورود</span>
-                    </button>
+                    <a href="https://github.com" target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-300 px-4 py-2 rounded-xl text-sm font-medium border border-cyan-500/20 hover:bg-cyan-500/20 transition">
+                        <i class="fab fa-github"></i> <span>گیت‌هاب</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -121,6 +185,14 @@
                     از SELECT تا Window Functions، همه چیز را با <span class="text-cyan-300">توضیحات کامل</span> و 
                     <span class="text-cyan-300">مثال‌های عملی</span> یاد بگیر. روی هر مبحث کلیک کن تا جزئیات رو ببینی.
                 </p>
+                <div class="flex flex-wrap items-center justify-center gap-4 mt-6">
+                    <a href="#beginner" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-7 py-3 rounded-xl shadow-lg shadow-cyan-500/20 transition flex items-center gap-2">
+                        <i class="fas fa-play"></i> شروع یادگیری
+                    </a>
+                    <!-- <a href="https://github.com" target="_blank" class="glass text-slate-300 hover:text-white font-medium px-6 py-3 rounded-xl border border-white/10 transition flex items-center gap-2">
+                        <i class="fab fa-github"></i> مشاهده در گیت‌هاب
+                    </a> -->
+                </div>
             </div>
         </section>
 
@@ -153,9 +225,7 @@
             </div>
         </div>
 
-        <!-- ====== لیست کامل کوئری‌ها و مفاهیم ====== -->
-
-        <!-- ====== سطح ۱: مبتدی (SELECT, WHERE, COUNT, SUM, AVG, MIN, MAX, DELETE, UPDATE) ====== -->
+        <!-- ====== سطح ۱: مبتدی ====== -->
         <div class="mb-10" data-level="beginner">
             <div class="flex items-center gap-3 mb-5">
                 <span class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-300 flex items-center justify-center border border-emerald-500/20">
@@ -165,7 +235,7 @@
                 <span class="text-xs bg-emerald-500/10 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20">۹ مفهوم</span>
             </div>
 
-            <!-- 1. SELECT -->
+            <!-- 1. SELECT (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="select">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -212,9 +282,19 @@
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-yellow-300">first_name</span>, <span class="text-yellow-300">last_name</span>, <span class="text-yellow-300">email</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>;</pre>
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">SELECT - انتخاب داده‌ها</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-yellow-300">first_name</span>, 
+                                        <span class="text-yellow-300">last_name</span>, 
+                                        <span class="text-yellow-300">email</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">students</span>;
+                                    </pre>
                                 </div>
                                 <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
                                     <i class="far fa-lightbulb text-amber-400 ml-1"></i>
@@ -235,7 +315,7 @@
                 </div>
             </div>
 
-            <!-- 2. WHERE -->
+            <!-- 2. WHERE (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="where filter شرط">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -278,11 +358,22 @@
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-yellow-300">first_name</span>, <span class="text-yellow-300">last_name</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
-<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">enrollment_year</span> = <span class="text-amber-300">2025</span>
-<span class="text-cyan-400">AND</span> <span class="text-yellow-300">gpa</span> <span class="text-cyan-400">&gt;=</span> <span class="text-amber-300">17</span>;</pre>
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">WHERE - فیلتر کردن</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-yellow-300">first_name</span>, 
+                                        <span class="text-yellow-300">last_name</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">students</span>
+                                        <span class="text-cyan-400">WHERE</span> 
+                                        <span class="text-yellow-300">enrollment_year</span> = <span class="text-amber-300">2025</span>
+                                        <span class="text-cyan-400">AND</span> 
+                                        <span class="text-yellow-300">gpa</span> <span class="text-cyan-400">&gt;=</span> <span class="text-amber-300">17</span>;
+                                    </pre>
                                 </div>
                                 <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
                                     <i class="far fa-lightbulb text-amber-400 ml-1"></i>
@@ -303,7 +394,7 @@
                 </div>
             </div>
 
-            <!-- 3. COUNT -->
+            <!-- 3. COUNT (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="count تعداد شمارش">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -328,33 +419,26 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    تابع <span class="text-cyan-300 font-mono">COUNT()</span> تعداد رکوردهایی را که با شرط مطابقت دارند، شمارش می‌کند. 
-                                    با <span class="text-cyan-300 font-mono">COUNT(*)</span> همه رکوردها و با <span class="text-cyan-300 font-mono">COUNT(column)</span> 
-                                    تعداد مقادیر غیر NULL را شمارش می‌کند.
+                                    تابع <span class="text-cyan-300 font-mono">COUNT()</span> تعداد رکوردهایی را که با شرط مطابقت دارند، شمارش می‌کند.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">همراه با <span class="text-cyan-300 font-mono">GROUP BY</span> برای دسته‌بندی استفاده می‌شود</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">مقادیر NULL را شمارش نمی‌کند</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">COUNT</span>(*) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">total_students</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
-<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">status</span> = <span class="text-amber-300">'active'</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    تعداد دانشجویان فعال را نمایش می‌دهد.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">COUNT - شمارش</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-cyan-400">COUNT</span>(*) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">total_students</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">students</span>
+                                        <span class="text-cyan-400">WHERE</span> 
+                                        <span class="text-yellow-300">status</span> = <span class="text-amber-300">'active'</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +455,7 @@
                 </div>
             </div>
 
-            <!-- 4. SUM -->
+            <!-- 4. SUM (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="sum جمع مجموع">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -396,32 +480,26 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    تابع <span class="text-cyan-300 font-mono">SUM()</span> مجموع مقادیر یک ستون عددی را محاسبه می‌کند. 
-                                    معمولاً با <span class="text-cyan-300 font-mono">GROUP BY</span> برای محاسبه مجموع در هر گروه استفاده می‌شود.
+                                    تابع <span class="text-cyan-300 font-mono">SUM()</span> مجموع مقادیر یک ستون عددی را محاسبه می‌کند.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">فقط روی ستون‌های عددی قابل استفاده است</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">مقادیر NULL را نادیده می‌گیرد</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">SUM</span>(<span class="text-yellow-300">amount</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">total_sales</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">orders</span>
-<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">date</span> = <span class="text-amber-300">'2025-01-01'</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    مجموع فروش در تاریخ مشخص را محاسبه می‌کند.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">SUM - مجموع</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-cyan-400">SUM</span>(<span class="text-yellow-300">amount</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">total_sales</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">orders</span>
+                                        <span class="text-cyan-400">WHERE</span> 
+                                        <span class="text-yellow-300">date</span> = <span class="text-amber-300">'2025-01-01'</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -438,7 +516,7 @@
                 </div>
             </div>
 
-            <!-- 5. AVG -->
+            <!-- 5. AVG (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="avg average میانگین معدل">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -463,32 +541,26 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    تابع <span class="text-cyan-300 font-mono">AVG()</span> میانگین مقادیر یک ستون عددی را محاسبه می‌کند. 
-                                    برای محاسبه میانگین نمرات، حقوق، قیمت و ... استفاده می‌شود.
+                                    تابع <span class="text-cyan-300 font-mono">AVG()</span> میانگین مقادیر یک ستون عددی را محاسبه می‌کند.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">فقط روی ستون‌های عددی قابل استفاده است</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">می‌توان با <span class="text-cyan-300 font-mono">ROUND()</span> گرد کرد</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">AVG</span>(<span class="text-yellow-300">gpa</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">average_gpa</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
-<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">department</span> = <span class="text-amber-300">'Computer Science'</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    میانگین معدل دانشجویان رشته کامپیوتر.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">AVG - میانگین</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-cyan-400">AVG</span>(<span class="text-yellow-300">gpa</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">average_gpa</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">students</span>
+                                        <span class="text-cyan-400">WHERE</span> 
+                                        <span class="text-yellow-300">department</span> = <span class="text-amber-300">'Computer Science'</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -505,7 +577,7 @@
                 </div>
             </div>
 
-            <!-- 6. MIN -->
+            <!-- 6. MIN (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="min minimum کمترین کوچکترین">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -530,31 +602,24 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    تابع <span class="text-cyan-300 font-mono">MIN()</span> کوچکترین مقدار را در یک ستون پیدا می‌کند. 
-                                    برای پیدا کردن کمترین قیمت، جوان‌ترین سن، کمترین نمره و ... استفاده می‌شود.
+                                    تابع <span class="text-cyan-300 font-mono">MIN()</span> کوچکترین مقدار را در یک ستون پیدا می‌کند.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">روی ستون‌های عددی و متنی قابل استفاده است</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">مقادیر NULL را نادیده می‌گیرد</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">MIN</span>(<span class="text-yellow-300">price</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">cheapest_product</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">products</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    ارزان‌ترین قیمت محصولات را پیدا می‌کند.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">MIN - کمترین</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-cyan-400">MIN</span>(<span class="text-yellow-300">price</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">cheapest_product</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">products</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -571,7 +636,7 @@
                 </div>
             </div>
 
-            <!-- 7. MAX -->
+            <!-- 7. MAX (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="max maximum بیشترین بزرگترین">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -596,31 +661,24 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    تابع <span class="text-cyan-300 font-mono">MAX()</span> بزرگترین مقدار را در یک ستون پیدا می‌کند. 
-                                    برای پیدا کردن گران‌ترین قیمت، مسن‌ترین سن، بالاترین نمره و ... استفاده می‌شود.
+                                    تابع <span class="text-cyan-300 font-mono">MAX()</span> بزرگترین مقدار را در یک ستون پیدا می‌کند.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">روی ستون‌های عددی و متنی قابل استفاده است</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">مقادیر NULL را نادیده می‌گیرد</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-cyan-400">MAX</span>(<span class="text-yellow-300">salary</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">highest_salary</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">employees</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    بالاترین حقوق کارمندان را پیدا می‌کند.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">MAX - بیشترین</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-cyan-400">MAX</span>(<span class="text-yellow-300">salary</span>) <span class="text-cyan-400">AS</span> <span class="text-yellow-300">highest_salary</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">employees</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -637,7 +695,7 @@
                 </div>
             </div>
 
-            <!-- 8. DELETE -->
+            <!-- 8. DELETE (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="delete حذف پاک کردن">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -665,28 +723,23 @@
                                     دستور <span class="text-red-300 font-mono">DELETE</span> برای حذف رکوردها از یک جدول استفاده می‌شود. 
                                     <span class="text-red-300 font-bold">هشدار:</span> بدون <span class="text-cyan-300 font-mono">WHERE</span> همه رکوردها حذف می‌شوند!
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-exclamation-triangle text-red-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">همیشه از <span class="text-cyan-300 font-mono">WHERE</span> استفاده کنید</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">قابل بازگشت نیست (مگر با <span class="text-cyan-300 font-mono">ROLLBACK</span>)</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-red-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">DELETE</span> <span class="text-cyan-400">FROM</span> <span class="text-blue-300">students</span>
-<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">id</span> = <span class="text-amber-300">123</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-red-500/10 p-3 rounded-xl border border-red-500/20">
-                                    <i class="fas fa-exclamation-triangle text-red-400 ml-1"></i>
-                                    دانشجویی با شناسه ۱۲۳ را حذف می‌کند.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">DELETE - حذف</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">DELETE</span> 
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">students</span>
+                                        <span class="text-cyan-400">WHERE</span> 
+                                        <span class="text-yellow-300">id</span> = <span class="text-amber-300">123</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -703,7 +756,7 @@
                 </div>
             </div>
 
-            <!-- 9. UPDATE -->
+            <!-- 9. UPDATE (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="beginner" data-search="update بروزرسانی تغییر">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -731,29 +784,25 @@
                                     دستور <span class="text-amber-300 font-mono">UPDATE</span> برای تغییر مقادیر رکوردهای موجود در جدول استفاده می‌شود. 
                                     <span class="text-amber-300 font-bold">توجه:</span> بدون <span class="text-cyan-300 font-mono">WHERE</span> همه رکوردها تغییر می‌کنند!
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-exclamation-triangle text-amber-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">همیشه از <span class="text-cyan-300 font-mono">WHERE</span> استفاده کنید</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">می‌توان چند ستون را همزمان تغییر داد</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-amber-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">UPDATE</span> <span class="text-blue-300">students</span>
-<span class="text-cyan-400">SET</span> <span class="text-yellow-300">gpa</span> = <span class="text-amber-300">18.5</span>, <span class="text-yellow-300">status</span> = <span class="text-amber-300">'graduated'</span>
-<span class="text-cyan-400">WHERE</span> <span class="text-yellow-300">id</span> = <span class="text-amber-300">456</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-amber-500/10 p-3 rounded-xl border border-amber-500/20">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    معدل و وضعیت دانشجو با شناسه ۴۵۶ را تغییر می‌دهد.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">UPDATE - بروزرسانی</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">UPDATE</span> 
+                                        <span class="text-blue-300">students</span>
+                                        <span class="text-cyan-400">SET</span> 
+                                        <span class="text-yellow-300">gpa</span> = <span class="text-amber-300">18.5</span>, 
+                                        <span class="text-yellow-300">status</span> = <span class="text-amber-300">'graduated'</span>
+                                        <span class="text-cyan-400">WHERE</span> 
+                                        <span class="text-yellow-300">id</span> = <span class="text-amber-300">456</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -771,7 +820,7 @@
             </div>
         </div>
 
-        <!-- ====== سطح ۲: متوسط (RANDOM, FOREIGN KEY, PRIMARY KEY) ====== -->
+        <!-- ====== سطح ۲: متوسط ====== -->
         <div class="mb-10" data-level="intermediate">
             <div class="flex items-center gap-3 mb-5">
                 <span class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-300 flex items-center justify-center border border-amber-500/20">
@@ -781,7 +830,7 @@
                 <span class="text-xs bg-amber-500/10 text-amber-300 px-3 py-1 rounded-full border border-amber-500/20">۳ مفهوم</span>
             </div>
 
-            <!-- 10. RANDOM -->
+            <!-- 10. RANDOM (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="intermediate" data-search="random تصادفی">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -806,33 +855,29 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    تابع <span class="text-cyan-300 font-mono">RANDOM()</span> (یا <span class="text-cyan-300 font-mono">RAND()</span> در برخی دیتابیس‌ها) 
-                                    برای انتخاب تصادفی رکوردها استفاده می‌شود. معمولاً با <span class="text-cyan-300 font-mono">ORDER BY</span> ترکیب می‌شود.
+                                    تابع <span class="text-cyan-300 font-mono">RANDOM()</span> برای انتخاب تصادفی رکوردها استفاده می‌شود.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">برای نمایش رکوردهای تصادفی مفید است</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">در هر بار اجرا نتیجه متفاوت است</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">SELECT</span> <span class="text-yellow-300">name</span>, <span class="text-yellow-300">question</span>
-<span class="text-cyan-400">FROM</span> <span class="text-blue-300">quiz_questions</span>
-<span class="text-cyan-400">ORDER BY</span> <span class="text-cyan-400">RANDOM()</span>
-<span class="text-cyan-400">LIMIT</span> <span class="text-amber-300">5</span>;</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    ۵ سوال تصادفی از بانک سوالات را انتخاب می‌کند.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">RANDOM - تصادفی</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">SELECT</span> 
+                                        <span class="text-yellow-300">name</span>, 
+                                        <span class="text-yellow-300">question</span>
+                                        <span class="text-cyan-400">FROM</span> 
+                                        <span class="text-blue-300">quiz_questions</span>
+                                        <span class="text-cyan-400">ORDER BY</span> 
+                                        <span class="text-cyan-400">RANDOM()</span>
+                                        <span class="text-cyan-400">LIMIT</span> 
+                                        <span class="text-amber-300">5</span>;
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -849,7 +894,7 @@
                 </div>
             </div>
 
-            <!-- 11. PRIMARY KEY -->
+            <!-- 11. PRIMARY KEY (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="intermediate" data-search="primary key کلید اصلی">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -874,36 +919,26 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    <span class="text-cyan-300 font-mono">PRIMARY KEY</span> (کلید اصلی) یک ستون یا ترکیبی از ستون‌ها است که 
-                                    به‌طور یکتا هر رکورد را در جدول مشخص می‌کند. 
-                                    <span class="text-cyan-300 font-bold">ویژگی‌ها:</span> یکتا (UNIQUE) و غیر NULL.
+                                    <span class="text-cyan-300 font-mono">PRIMARY KEY</span> ستونی است که به‌طور یکتا هر رکورد را مشخص می‌کند.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">هر جدول فقط یک PRIMARY KEY دارد</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">معمولاً از <span class="text-cyan-300 font-mono">AUTO_INCREMENT</span> استفاده می‌شود</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">students</span> (
-    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span> <span class="text-cyan-400">AUTO_INCREMENT</span>,
-    <span class="text-yellow-300">first_name</span> <span class="text-cyan-400">TEXT</span>,
-    <span class="text-yellow-300">last_name</span> <span class="text-cyan-400">TEXT</span>,
-    <span class="text-yellow-300">email</span> <span class="text-cyan-400">TEXT</span>
-);</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    ستون id به‌عنوان کلید اصلی، هر دانشجو را یکتا می‌کند.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">PRIMARY KEY</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">CREATE TABLE</span> 
+                                        <span class="text-blue-300">students</span> (
+                                            <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span> <span class="text-cyan-400">AUTO_INCREMENT</span>,
+                                            <span class="text-yellow-300">first_name</span> <span class="text-cyan-400">TEXT</span>,
+                                            <span class="text-yellow-300">last_name</span> <span class="text-cyan-400">TEXT</span>
+                                        );
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -920,7 +955,7 @@
                 </div>
             </div>
 
-            <!-- 12. FOREIGN KEY -->
+            <!-- 12. FOREIGN KEY (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="intermediate" data-search="foreign key کلید خارجی">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -945,36 +980,28 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    <span class="text-cyan-300 font-mono">FOREIGN KEY</span> (کلید خارجی) ستونی است که به PRIMARY KEY جدول دیگر ارجاع می‌دهد. 
-                                    برای ایجاد ارتباط بین جداول و حفظ یکپارچگی داده‌ها استفاده می‌شود.
+                                    <span class="text-cyan-300 font-mono">FOREIGN KEY</span> ستونی است که به PRIMARY KEY جدول دیگر ارجاع می‌دهد.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">ارتباط <span class="text-cyan-300 font-mono">one-to-many</span> را پیاده‌سازی می‌کند</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">با <span class="text-cyan-300 font-mono">ON DELETE CASCADE</span> حذف زنجیره‌ای</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">enrollments</span> (
-    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span> <span class="text-cyan-400">AUTO_INCREMENT</span>,
-    <span class="text-yellow-300">student_id</span> <span class="text-cyan-400">INTEGER</span>,
-    <span class="text-yellow-300">course_id</span> <span class="text-cyan-400">INTEGER</span>,
-    <span class="text-cyan-400">FOREIGN KEY</span> (student_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">students</span>(id),
-    <span class="text-cyan-400">FOREIGN KEY</span> (course_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">courses</span>(id)
-);</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    جدول ثبت‌نام که به جداول students و courses متصل است.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">FOREIGN KEY</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">CREATE TABLE</span> 
+                                        <span class="text-blue-300">enrollments</span> (
+                                            <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+                                            <span class="text-yellow-300">student_id</span> <span class="text-cyan-400">INTEGER</span>,
+                                            <span class="text-cyan-400">FOREIGN KEY</span> (student_id) 
+                                            <span class="text-cyan-400">REFERENCES</span> 
+                                            <span class="text-blue-300">students</span>(id)
+                                        );
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -992,7 +1019,7 @@
             </div>
         </div>
 
-        <!-- ====== سطح ۳: پیشرفته و مفاهیم (ONE TO ONE, ONE TO MANY) ====== -->
+        <!-- ====== سطح ۳: پیشرفته ====== -->
         <div data-level="advanced concept">
             <div class="flex items-center gap-3 mb-5">
                 <span class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-300 flex items-center justify-center border border-rose-500/20">
@@ -1002,7 +1029,7 @@
                 <span class="text-xs bg-rose-500/10 text-rose-300 px-3 py-1 rounded-full border border-rose-500/20">۲ مفهوم</span>
             </div>
 
-            <!-- 13. ONE TO ONE -->
+            <!-- 13. ONE TO ONE (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="advanced concept" data-search="one to one یک به یک">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -1028,40 +1055,33 @@
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
                                     رابطه <span class="text-cyan-300 font-bold">One-to-One</span> زمانی است که هر رکورد در جدول A 
-                                    دقیقاً به یک رکورد در جدول B مرتبط است و بالعکس. معمولاً برای جدا کردن داده‌های حساس یا 
-                                    داده‌های با تعداد ستون زیاد استفاده می‌شود.
+                                    دقیقاً به یک رکورد در جدول B مرتبط است و بالعکس.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">مثال: کاربر و پروفایل</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">کلید خارجی معمولاً <span class="text-cyan-300 font-mono">UNIQUE</span> است</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">users</span> (
-    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
-    <span class="text-yellow-300">username</span> <span class="text-cyan-400">TEXT</span>
-);
-
-<span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">profiles</span> (
-    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
-    <span class="text-yellow-300">user_id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">UNIQUE</span>,
-    <span class="text-yellow-300">bio</span> <span class="text-cyan-400">TEXT</span>,
-    <span class="text-cyan-400">FOREIGN KEY</span> (user_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">users</span>(id)
-);</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    هر کاربر دقیقاً یک پروفایل دارد.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">One-to-One</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">CREATE TABLE</span> 
+                                        <span class="text-blue-300">users</span> (
+                                            <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+                                            <span class="text-yellow-300">username</span> <span class="text-cyan-400">TEXT</span>
+                                        );
+                                        <span class="text-cyan-400">CREATE TABLE</span> 
+                                        <span class="text-blue-300">profiles</span> (
+                                            <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+                                            <span class="text-yellow-300">user_id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">UNIQUE</span>,
+                                            <span class="text-cyan-400">FOREIGN KEY</span> (user_id) 
+                                            <span class="text-cyan-400">REFERENCES</span> 
+                                            <span class="text-blue-300">users</span>(id)
+                                        );
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -1078,7 +1098,7 @@
                 </div>
             </div>
 
-            <!-- 14. ONE TO MANY -->
+            <!-- 14. ONE TO MANY (اصلاح‌شده) -->
             <div class="glass rounded-2xl border border-white/5 mb-4 overflow-hidden query-card" data-level="advanced concept" data-search="one to many یک به چند">
                 <div class="p-5 flex items-center justify-between cursor-pointer" onclick="toggleQuery(this)">
                     <div class="flex items-center gap-4">
@@ -1103,40 +1123,35 @@
                                     <i class="fas fa-info-circle"></i> توضیحات
                                 </h4>
                                 <p class="text-sm text-slate-300 leading-relaxed">
-                                    رابطه <span class="text-cyan-300 font-bold">One-to-Many</span> (یک به چند) رایج‌ترین نوع رابطه در دیتابیس‌های رابط‌ای است. 
-                                    هر رکورد در جدول A می‌تواند به چندین رکورد در جدول B مرتبط باشد، اما هر رکورد در B فقط به یک رکورد در A متصل است.
+                                    رابطه <span class="text-cyan-300 font-bold">One-to-Many</span> رایج‌ترین نوع رابطه در دیتابیس‌های رابط‌ای است. 
+                                    هر رکورد در جدول A می‌تواند به چندین رکورد در جدول B مرتبط باشد.
                                 </p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">مثال: دانشجو و ثبت‌نام‌ها</span>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
-                                        <span class="text-slate-400">کلید خارجی در جدول Many قرار می‌گیرد</span>
-                                    </div>
-                                </div>
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-2">
                                     <i class="fas fa-code"></i> مثال
                                 </h4>
-                                <div class="code-block p-4">
-                                    <pre class="text-sm font-mono text-slate-300 leading-relaxed"><span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">authors</span> (
-    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
-    <span class="text-yellow-300">name</span> <span class="text-cyan-400">TEXT</span>
-);
-
-<span class="text-cyan-400">CREATE TABLE</span> <span class="text-blue-300">books</span> (
-    <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
-    <span class="text-yellow-300">title</span> <span class="text-cyan-400">TEXT</span>,
-    <span class="text-yellow-300">author_id</span> <span class="text-cyan-400">INTEGER</span>,
-    <span class="text-cyan-400">FOREIGN KEY</span> (author_id) <span class="text-cyan-400">REFERENCES</span> <span class="text-blue-300">authors</span>(id)
-);</pre>
-                                </div>
-                                <div class="mt-3 text-xs text-slate-400 bg-slate-800/30 p-3 rounded-xl">
-                                    <i class="far fa-lightbulb text-amber-400 ml-1"></i>
-                                    هر نویسنده می‌تواند چندین کتاب داشته باشد.
+                                <div class="code-block p-4 overflow-x-auto bg-slate-900/50 border border-slate-700/30 rounded-xl">
+                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                        <i class="fas fa-code text-cyan-400"></i>
+                                        <span class="text-[10px] md:text-xs">One-to-Many</span>
+                                    </div>
+                                    <pre class="font-mono text-slate-300 leading-relaxed" style="font-size: clamp(9px, 1.5vw, 14px); white-space: pre-wrap; word-wrap: break-word;">
+                                        <span class="text-cyan-400">CREATE TABLE</span> 
+                                        <span class="text-blue-300">authors</span> (
+                                            <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+                                            <span class="text-yellow-300">name</span> <span class="text-cyan-400">TEXT</span>
+                                        );
+                                        <span class="text-cyan-400">CREATE TABLE</span> 
+                                        <span class="text-blue-300">books</span> (
+                                            <span class="text-yellow-300">id</span> <span class="text-cyan-400">INTEGER</span> <span class="text-cyan-400">PRIMARY KEY</span>,
+                                            <span class="text-yellow-300">title</span> <span class="text-cyan-400">TEXT</span>,
+                                            <span class="text-yellow-300">author_id</span> <span class="text-cyan-400">INTEGER</span>,
+                                            <span class="text-cyan-400">FOREIGN KEY</span> (author_id) 
+                                            <span class="text-cyan-400">REFERENCES</span> 
+                                            <span class="text-blue-300">authors</span>(id)
+                                        );
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -1165,7 +1180,7 @@
                 </div>
                 <span class="font-medium text-slate-300">SQL<span class="text-slate-500">آکادمی</span></span>
                 <span class="text-slate-600">|</span>
-                <span class="text-slate-500">دانشگاه صنعتی</span>
+                <span class="text-slate-500">دانشگاه صنعتی شریف</span>
             </div>
             <div class="flex items-center gap-6 text-xs">
                 <a href="#" class="hover:text-slate-300 transition">درباره ما</a>
@@ -1183,14 +1198,6 @@
         function toggleQuery(element) {
             const detail = element.nextElementSibling;
             const chevron = element.querySelector('.fa-chevron-down');
-            
-            // بستن سایر کوئری‌های باز (اختیاری - برای حالت تک‌باز)
-            // document.querySelectorAll('.query-detail.open').forEach(el => {
-            //     if (el !== detail) {
-            //         el.classList.remove('open');
-            //         el.previousElementSibling.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
-            //     }
-            // });
             
             detail.classList.toggle('open');
             if (chevron) {
@@ -1230,14 +1237,12 @@
             const cards = document.querySelectorAll('.query-card');
             const buttons = document.querySelectorAll('.flex-wrap.justify-center .px-6');
             
-            // به‌روزرسانی دکمه‌ها
             buttons.forEach(btn => {
                 btn.classList.remove('tab-active');
                 btn.classList.add('text-slate-400', 'border-white/5');
                 btn.classList.remove('border-cyan-500/20');
             });
             
-            // پیدا کردن دکمه کلیک شده
             const clickedBtn = Array.from(buttons).find(btn => 
                 btn.textContent.includes(getLevelName(level))
             );
@@ -1247,7 +1252,6 @@
                 clickedBtn.classList.add('border-cyan-500/20');
             }
             
-            // فیلتر کردن کارت‌ها
             cards.forEach(card => {
                 if (level === 'all') {
                     card.style.display = 'block';
